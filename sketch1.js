@@ -1,14 +1,8 @@
-var birdImage; 
-
-function preload(){
-	birdImage = loadImage("img/bird.png");
-}
-
 function setup() {
     HEIGHT = 600;
     GAP_HEIGHT = 175;
-    BAR_SPACE = 250
-    BAR_0 = 200
+    BAR_SPACE = 250;
+    BAR_0 = 350;
     createCanvas(600, HEIGHT);
     h = 50;
     v = 2;
@@ -17,16 +11,19 @@ function setup() {
     gaps = [random(HEIGHT - GAP_HEIGHT), random(HEIGHT - GAP_HEIGHT), random(HEIGHT - GAP_HEIGHT), random(HEIGHT - GAP_HEIGHT)];
     v_bar = 0.75;
     a_bar = 0.000075;
+    game_over = 0;
+    score = 0;
+    max_score = 0;
 }
 
 function draw() {
-    background(113, 196, 210);
+    background(180, 180, 250);
     //rect(0,50,20,HEIGHT);
     for (var i=0;i<bars.length;i++){
-        fill(116, 189, 46);
+        fill(10, 140, 10);
         noStroke();
         rect(bars[i],0,40,HEIGHT);
-        fill(113, 196, 210);
+        fill(180, 180, 250);
         noStroke();
         rect(bars[i]-2,gaps[i],40+4,GAP_HEIGHT);
         v_bar+=a_bar;
@@ -38,13 +35,16 @@ function draw() {
             else {
                 bars[i] = bars[bars.length-1] + BAR_SPACE;
             }
+            score++;
+            if (score>=max_score){
+                max_score = score;
+            }
         }
         else {
             bars[i] -= v_bar;
         }
         if ((h>HEIGHT)||((50>=bars[i]) & (70<=bars[i]+40) & (h<gaps[i] || h>(gaps[i]+GAP_HEIGHT)))){
             fill(0);
-            text(":(", 20, h);
             h = 50;
             v = 2;
             g = 0.2;
@@ -52,9 +52,12 @@ function draw() {
             gaps = [random(HEIGHT - GAP_HEIGHT), random(HEIGHT - GAP_HEIGHT), random(HEIGHT - GAP_HEIGHT), random(HEIGHT - GAP_HEIGHT)];
             v_bar = 0.75;
             a_bar = 0.000075;
+            game_over=30;
+            score=0;
         }
 
     }
+
     v += g;
     h += v;
     if (h<0){
@@ -64,6 +67,19 @@ function draw() {
     textSize(50);
     text("🦉", 20, h);
     fill(0);
+
+    if (game_over>0){
+        text("¡Perdiste! 😭", 20, 50);
+    }
+    if (game_over<0){
+        game_over=0;
+    }
+    else {
+        game_over--;
+    }
+    textSize(18);
+    text("Puntaje: " + String(score), 480, 30);
+    text("Máximo: " + String(max_score), 480, 50);
 }
 
 function mouseClicked() {
