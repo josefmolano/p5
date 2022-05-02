@@ -3,7 +3,7 @@ let mySound;
 
 function preload() {
     mySound = [
-        loadSound("sounds/slash-21834.mp3")
+        loadSound("../sounds/slash-21834.mp3")
     ];
 }
 
